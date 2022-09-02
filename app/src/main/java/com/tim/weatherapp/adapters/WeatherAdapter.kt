@@ -11,20 +11,21 @@ import com.tim.weatherapp.R
 import com.tim.weatherapp.databinding.ListItemBinding
 
 class WeatherAdapter : ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view){
+    class Holder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = ListItemBinding.bind(view)
 
-        fun bind(item: WeatherModel) = with(binding){
+        fun bind(item: WeatherModel) = with(binding) {
 
             textDataOfItem.text = item.time
-            textTemperatureOfItem.text = item.currentTemperature
+            textTemperatureOfItem.text =
+                item.currentTemperature.ifEmpty { "   ${item.maxTemperature}\n${item.minTemperature}°C" }
             windSpeed.text = item.windSpeed
             Picasso.get().load("https:" + item.imageUrl).into(imageItemCondition)
         }
     }
 
-    class Comparator : DiffUtil.ItemCallback<WeatherModel>(){
+    class Comparator : DiffUtil.ItemCallback<WeatherModel>() {
         override fun areItemsTheSame(oldItem: WeatherModel, newItem: WeatherModel): Boolean {
 
             return oldItem == newItem
@@ -32,14 +33,14 @@ class WeatherAdapter : ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparat
 
         override fun areContentsTheSame(oldItem: WeatherModel, newItem: WeatherModel): Boolean {
 
-            return  oldItem == newItem
+            return oldItem == newItem
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return  Holder(view)
+        return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

@@ -20,15 +20,36 @@ import org.json.JSONObject
 import kotlin.math.roundToInt
 
 class TenDaysFragmentNew : Fragment() {
-    private lateinit var binding: FragmentTodayInfoBinding
+    private lateinit var binding: FragmentTenDaysNewBinding
     private lateinit var adapter: WeatherAdapter
     private val model: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-        ): View? {
-        return null
+        ): View {
+        binding = FragmentTenDaysNewBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initRecyclerView()
+
+        model.liveDataList.observe(viewLifecycleOwner){
+
+            adapter.submitList(it.subList(1, it.size))
+        }
+    }
+
+    private fun initRecyclerView() = with(binding){
+
+        RecyclerViewTenDaysNew.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        adapter = WeatherAdapter()
+        RecyclerViewTenDaysNew.adapter = adapter
     }
     
     companion object {
