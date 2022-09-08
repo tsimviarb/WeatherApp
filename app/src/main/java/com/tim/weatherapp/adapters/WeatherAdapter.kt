@@ -19,7 +19,7 @@ class WeatherAdapter : ListAdapter<WeatherModel, WeatherAdapter.Holder>(Comparat
 
             textDataOfItem.text = item.time
             textTemperatureOfItem.text =
-                item.currentTemperature.ifEmpty { "${item.maxTemperature}°C\n${item.minTemperature}°C" }
+                item.currentTemperature.ifEmpty { "${item.maxTemperature}°C" }
             windSpeed.text = item.windSpeed
             Picasso.get().load("https:" + item.imageUrl).into(imageItemCondition)
         }

@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="185dp"
+        android:layout_marginBottom="170dp"
         android:alpha="1"
         android:background="@color/invisible"
         app:cardBackgroundColor="@color/invisible"
@@ -152,9 +152,10 @@
                 android:layout_marginTop="5dp"
                 android:background="@null"
                 android:fontFamily="@font/roboto_medium"
-                android:text="20"
+                android:text="20.0"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="56sp"
+                android:textSize="50sp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewMaxMinTemperature"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -166,8 +167,9 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="°C"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="44sp"
+                android:textSize="40sp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewMaxMinTemperature"
                 app:layout_constraintStart_toEndOf="@+id/textViewCurrentTemperature" />
 
@@ -175,12 +177,13 @@
                 android:id="@+id/textViewCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="sunny"
                 android:textColor="@color/black"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -189,8 +192,8 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@drawable/ic_launcher_foreground"
-                app:layout_constraintBottom_toTopOf="@+id/textViewCondition"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton_update_info" />
+                app:layout_constraintEnd_toStartOf="@+id/imageButton_update_info"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/imageButton_update_info"
@@ -211,6 +214,7 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="25°C /16°C"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -226,6 +230,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
+        app:tabTextColor="@color/black"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
@@ -253,17 +258,15 @@
         android:id="@+id/ViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:nestedScrollingEnabled="false"
+        android:nestedScrollingEnabled="true"
         android:scrollIndicators="none"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout_days_switcher"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,7 +60,7 @@ class TodayInfoFragment : Fragment() {
 
         for (i in currentTime until hoursArray.length()){
 
-            val windSpeedMS = ((hoursArray[i] as JSONObject).getString("wind_mph")
+            val windSpeedMS = ((hoursArray[i] as JSONObject).getString("wind_kph")
                 .toDouble() * 2.8).roundToInt()
 
             val item = WeatherModel(
@@ -70,7 +70,7 @@ class TodayInfoFragment : Fragment() {
                 (hoursArray[i] as JSONObject).getString("temp_c") + "°C",
                 "",
                 "",
-                "${windSpeedMS / 10}.${windSpeedMS % 10} m/s",
+                "${windSpeedMS / 10}.${windSpeedMS % 10}m/s",
                 (hoursArray[i] as JSONObject)
                     .getJSONObject("condition").getString("icon"),
                 ""

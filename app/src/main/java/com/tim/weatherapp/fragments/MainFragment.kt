@@ -23,6 +23,7 @@ import com.tim.weatherapp.adapters.ViewPagerAdapter
 import com.tim.weatherapp.adapters.WeatherModel
 import com.tim.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
+import kotlin.math.roundToInt
 
 const val API_Key = "05be604b8a704207b3a135103220709"
 
@@ -52,6 +53,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.backgroundImg.setImageResource(R.drawable.summer_day_clear_sky)
         checkPermission()
         init()
         requestWeatherData("Minsk")
@@ -60,6 +62,7 @@ class MainFragment : Fragment() {
 
     private fun init() = with(binding) {
 
+        ViewPager.isUserInputEnabled = false
         val adapter = ViewPagerAdapter(activity as FragmentActivity, fragmentsList)
         ViewPager.adapter = adapter
 
@@ -81,7 +84,7 @@ class MainFragment : Fragment() {
             textViewMaxMinTemperature.text = maxMinTemperature
             Picasso.get().load("https:" + it.imageUrl).into(imageWeather)
 
-            changeBackgroundImage(/*textViewData*/8)
+            changeBackgroundImage(/*textViewData*/3)
         }
     }
 
@@ -137,6 +140,9 @@ class MainFragment : Fragment() {
         for (i in 0 until daysArray.length()) {
             val day = daysArray[i] as JSONObject
 
+            val windSpeedMS = (day.getJSONObject("day").getString("maxwind_kph")
+                .toDouble() * 2.8).roundToInt()
+
             val item = WeatherModel(
                 cityName,
                 day.getString("date"),
@@ -145,7 +151,7 @@ class MainFragment : Fragment() {
                 "",
                 day.getJSONObject("day").getString("mintemp_c"),
                 day.getJSONObject("day").getString("maxtemp_c"),
-                "",
+                "${windSpeedMS / 10}.${windSpeedMS % 10}m/s",
                 day.getJSONObject("day")
                     .getJSONObject("condition").getString("icon"),
                 day.getJSONArray("hour").toString()

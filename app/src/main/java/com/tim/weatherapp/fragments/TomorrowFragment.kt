@@ -57,7 +57,7 @@ class TomorrowFragment : Fragment() {
 
         for (i in 0 until hoursArray.length()) {
 
-            val windSpeedMS = ((hoursArray[i] as JSONObject).getString("wind_mph")
+            val windSpeedMS = ((hoursArray[i] as JSONObject).getString("wind_kph")
                 .toDouble() * 2.8).roundToInt()
 
             val item = WeatherModel(
