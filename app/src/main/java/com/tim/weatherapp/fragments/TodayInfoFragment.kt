@@ -53,14 +53,19 @@ class TodayInfoFragment : Fragment() {
         val hoursArray = JSONArray(weatherItem.hours)
         val list = ArrayList<WeatherModel>()
 
-        for (i in 0 until hoursArray.length()){
+        var currentTime = weatherItem.time[11]
+            .digitToInt() * 10
+        currentTime += weatherItem.time[12]
+            .digitToInt()
+
+        for (i in currentTime until hoursArray.length()){
 
             val windSpeedMS = ((hoursArray[i] as JSONObject).getString("wind_mph")
                 .toDouble() * 2.8).roundToInt()
 
             val item = WeatherModel(
                 "",
-                (hoursArray[i] as JSONObject).getString("time"),
+                "${currentTime++}:00",
                 "",
                 (hoursArray[i] as JSONObject).getString("temp_c") + "°C",
                 "",

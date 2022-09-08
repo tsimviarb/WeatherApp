@@ -1,5 +1,6 @@
 package com.tim.weatherapp.fragments
 
+import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -52,6 +53,7 @@ class TomorrowFragment : Fragment() {
 
         val hoursArray = JSONArray(weatherItem.hours)
         val list = ArrayList<WeatherModel>()
+        var hours = 0
 
         for (i in 0 until hoursArray.length()) {
 
@@ -60,7 +62,13 @@ class TomorrowFragment : Fragment() {
 
             val item = WeatherModel(
                 "",
-                (hoursArray[i] as JSONObject).getString("time"),
+                       "${
+                           if(hours < 10){
+                               "0" + hours++
+                           } else {
+                               hours++
+                           }
+                       }:00",
                 "",
                 (hoursArray[i] as JSONObject).getString("temp_c") + "°C",
                 "",

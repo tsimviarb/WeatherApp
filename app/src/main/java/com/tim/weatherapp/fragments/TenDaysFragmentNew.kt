@@ -37,7 +37,7 @@ class TenDaysFragmentNew : Fragment() {
 
         initRecyclerView()
 
-        model.liveDataList.observe(viewLifecycleOwner){
+        model.liveDataTenDays.observe(viewLifecycleOwner){
 
             adapter.submitList(it.subList(1, it.size))
         }

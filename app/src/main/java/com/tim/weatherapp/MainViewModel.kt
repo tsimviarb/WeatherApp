@@ -8,5 +8,5 @@ class MainViewModel : ViewModel() {
 
     val liveDataCurrent = MutableLiveData<WeatherModel>()
     val liveDataTomorrow = MutableLiveData<WeatherModel>()
-    val liveDataList = MutableLiveData<List<WeatherModel>>()
+    val liveDataTenDays = MutableLiveData<List<WeatherModel>>()
 }
