@@ -6,19 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
+    android:background="@color/common_google_signin_btn_text_light_focused"
     tools:context=".fragments.MainFragment">
 
     <ImageView
         android:id="@+id/background_img"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -28,13 +27,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:alpha="1"
-        android:background="@color/invisible"
-        app:cardBackgroundColor="@color/invisible"
-        app:cardCornerRadius="12dp"
+        android:background="@drawable/borders_for_view"
+        app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/background_img">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -42,17 +40,7 @@
             android:background="@color/invisible">
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/borders_for_view"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/timeUpdatePointer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -69,11 +57,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="16dp"
                 android:alpha="1"
                 android:background="@null"
                 android:fontFamily="@font/roboto_medium"
-                android:text="25/08/2022"
+                android:text="12:00"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -118,11 +106,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="170dp"
+        android:layout_marginBottom="150dp"
         android:alpha="1"
-        android:background="@color/invisible"
-        app:cardBackgroundColor="@color/invisible"
-        app:cardCornerRadius="12dp"
+        android:background="@drawable/borders_for_view"
+        app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="false"
@@ -138,7 +125,6 @@
                 android:id="@+id/textView4"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/borders_for_view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -150,12 +136,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
+                android:alpha="1"
                 android:background="@null"
                 android:fontFamily="@font/roboto_medium"
                 android:text="20.0"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="50sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textViewMaxMinTemperature"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -167,9 +154,9 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="°C"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="40sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textViewMaxMinTemperature"
                 app:layout_constraintStart_toEndOf="@+id/textViewCurrentTemperature" />
 
@@ -214,9 +201,9 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="25°C /16°C"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -230,11 +217,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        app:tabTextColor="@color/black"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2">
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:tabTextColor="@color/black">
 
 
         <com.google.android.material.tabs.TabItem

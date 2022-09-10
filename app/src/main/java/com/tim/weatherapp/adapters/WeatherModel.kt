@@ -9,5 +9,8 @@ data class WeatherModel (
     val maxTemperature: String,
     val windSpeed: String,
     val imageUrl: String,
-    val hours: String) {
+    val hours: String,
+    val sunrise: String,
+    val sunset: String,
+    val precipitation: String) {
 }

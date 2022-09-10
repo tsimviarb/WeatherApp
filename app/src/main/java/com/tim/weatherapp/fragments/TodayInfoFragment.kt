@@ -73,6 +73,9 @@ class TodayInfoFragment : Fragment() {
                 "${windSpeedMS / 10}.${windSpeedMS % 10}m/s",
                 (hoursArray[i] as JSONObject)
                     .getJSONObject("condition").getString("icon"),
+                "",
+                "",
+                "",
                 ""
             )
             list.add(item)

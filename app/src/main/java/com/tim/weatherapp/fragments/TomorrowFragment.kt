@@ -1,6 +1,5 @@
 package com.tim.weatherapp.fragments
 
-import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -76,6 +75,9 @@ class TomorrowFragment : Fragment() {
                 "${windSpeedMS / 10}.${windSpeedMS % 10} m/s",
                 (hoursArray[i] as JSONObject)
                     .getJSONObject("condition").getString("icon"),
+                "",
+            "",
+                "",
                 ""
             )
             list.add(item)
