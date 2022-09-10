@@ -230,7 +230,7 @@ class MainFragment : Fragment() {
                 sunsetX[1].digitToInt() * 100 +
                 sunsetX[3].digitToInt() * 10 +
                 sunsetX[4].digitToInt() + 12 * 100
-        val snowPrecipitation = precipitation[0].digitToInt() * 10
+        val snowPrecipitation = 31//precipitation[0].digitToInt() * 10 + precipitation[1].digitToInt()
 
         Toast.makeText(activity, "$currentTime $sunrise $sunset", Toast.LENGTH_LONG).show()
 
