@@ -5,8 +5,9 @@
     android:layout_width="105dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="0dp"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="5dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/borders_for_view"
     android:backgroundTint="@color/invisible"
     app:cardBackgroundColor="@color/invisible"
@@ -53,10 +54,9 @@
             android:layout_width="32dp"
             android:layout_height="20dp"
             android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/windSpeed"
+            android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/windSpeed"
-            app:layout_constraintVertical_bias="0.8"
             app:srcCompat="@drawable/img" />
 
         <TextView
@@ -94,7 +94,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="55dp"
             android:fontFamily="@font/roboto_medium"
             android:text="25.0'C"
             android:textColor="@color/black"
@@ -103,7 +102,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.515"
             app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toTopOf="@+id/imageItemCondition" />
+            app:layout_constraintTop_toBottomOf="@+id/imageItemCondition" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

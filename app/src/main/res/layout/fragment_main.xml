@@ -16,8 +16,10 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -28,6 +30,7 @@
         android:layout_marginEnd="8dp"
         android:alpha="1"
         android:background="@drawable/borders_for_view"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +51,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="Last time updated:"
                 android:textColor="@color/black"
+                android:textStyle="bold"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,43 +63,43 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:alpha="1"
-                android:background="@null"
                 android:fontFamily="@font/roboto_medium"
                 android:text="12:00"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewCityName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="8dp"
-                android:background="@null"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Minsk"
                 android:textColor="@color/black"
                 android:textSize="26sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewData"
                 app:layout_constraintVertical_bias="0.0" />
 
+
             <ImageButton
                 android:id="@+id/imageButton_search_city"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="8dp"
                 android:background="@null"
                 android:src="@drawable/search_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewData" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -106,9 +110,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="150dp"
-        android:alpha="1"
+        android:layout_marginBottom="165dp"
         android:background="@drawable/borders_for_view"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -122,26 +126,16 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/textViewCurrentTemperature"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="67dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 android:alpha="1"
-                android:background="@null"
                 android:fontFamily="@font/roboto_medium"
                 android:text="20.0"
                 android:textColor="@color/black"
-                android:textSize="50sp"
+                android:textSize="50dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textViewMaxMinTemperature"
                 app:layout_constraintStart_toStartOf="parent"
@@ -178,20 +172,22 @@
                 android:id="@+id/imageWeather"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_launcher_foreground"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton_update_info"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/imageButton_update_info"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="8dp"
                 android:background="@null"
                 android:src="@drawable/update_info_button"
+                app:layout_constraintBottom_toBottomOf="@+id/imageWeather"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/imageWeather"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textViewMaxMinTemperature"
@@ -217,12 +213,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        android:background="@null"
+        android:background="@color/invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:tabTextColor="@color/black">
-
+        app:layout_constraintStart_toStartOf="@+id/cardView2">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

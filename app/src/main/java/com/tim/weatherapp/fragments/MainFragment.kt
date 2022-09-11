@@ -1,6 +1,7 @@
 package com.tim.weatherapp.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -85,12 +86,13 @@ class MainFragment : Fragment() {
             textViewCondition.text = it.condition
             textViewMaxMinTemperature.text = maxMinTemperature
             Picasso.get().load("https:" + it.imageUrl).into(imageWeather)
+
             changeBackgroundImage(it.time,
                 it.sunrise,
                 it.sunset,
-                "Moderate or heavy sleet showers" /*it.condition*/,
-                it.precipitation)
-            //ChangeBackgroundImage(binding).changeBackgroundImage(3)
+                 it.condition,
+                it.maxTemperature.toFloat(),
+                it.minTemperature.toFloat())
         }
     }
 
@@ -213,15 +215,18 @@ class MainFragment : Fragment() {
         model.liveDataTomorrow.value = item
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun changeBackgroundImage(
         month: String,
         sunriseX: String,
         sunsetX: String,
         condition: String,
-        precipitation: String) = with(binding){
+        maxTemperature: Float,
+        minTemperature: Float
+    ) = with(binding){
 
-        val season = 12//month[5].digitToInt() * 10 + month[6].digitToInt()
-        val currentTime = 2300//month[11].digitToInt() * 1000 + month[12].digitToInt() * 100
+        val season = month[5].digitToInt() * 10 + month[6].digitToInt()
+        val currentTime = month[11].digitToInt() * 1000 + month[12].digitToInt() * 100
         val sunrise = sunriseX[0].digitToInt() * 1000 +
                 sunriseX[1].digitToInt() * 100 +
                 sunriseX[3].digitToInt() * 10 +
@@ -230,232 +235,28 @@ class MainFragment : Fragment() {
                 sunsetX[1].digitToInt() * 100 +
                 sunsetX[3].digitToInt() * 10 +
                 sunsetX[4].digitToInt() + 12 * 100
-        val snowPrecipitation = 31//precipitation[0].digitToInt() * 10 + precipitation[1].digitToInt()
 
-        Toast.makeText(activity, "$currentTime $sunrise $sunset", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "$currentTime $sunrise $sunset $condition", Toast.LENGTH_LONG).show()
 
         if (season in 9..11){
 
             if (currentTime in sunrise .. 1200){
-
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_morning_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_morning_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_morning_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_morning_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_morning_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.autumn_morning_sunny)
             }
 
             if (currentTime in 1200 until sunset - 100){
 
-
-                if (condition == "Sunny" || condition == "Clear"|| condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_day_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_day_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_day_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_day_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_day_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.autumn_day_sunny)
             }
 
             if (currentTime in (sunset - 100) .. (sunset + 100)){
 
-
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_evening_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_evening_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_evening_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_evening_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_evening_thunder)
-                }
+                //textViewData.setHintTextColor(R.color.white)
+                backgroundImg.setImageResource(R.drawable.autumn_evening_sunny)
             }
 
             if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
-
-                if (condition == "Sunny" || condition == "Clear"|| condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_night_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_night_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_night_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_night_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.autumn_night_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.autumn_night_sunny)
             }
         }
 
@@ -463,504 +264,69 @@ class MainFragment : Fragment() {
 
             if (currentTime in sunrise .. 1200){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                if(minTemperature < -5){
 
-                    if(snowPrecipitation > 30.0){
+                    backgroundImg.setImageResource(R.drawable.winter_morning_light_sunny)
+                } else{
 
-                        backgroundImg.setImageResource(R.drawable.winter_morning_light_sunny)
-                    } else{
-
-                        backgroundImg.setImageResource(R.drawable.winter_morning_dark_sunny)
-                    }
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog" ||
-                    condition == "Freezing fog"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_morning_dark_cloudy)
-                }
-
-                if (condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Light showers of ice pellets" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light snow showers" ||
-                    condition == "Light sleet showers" ||
-                    condition == "Patchy snow possible" ||
-                    condition == "Blowing snow"||
-                    condition == "Blizzard" ||
-                    condition == "Light snow" ||
-                    condition == "Ice pellets") {
-
-                    if (snowPrecipitation > 30.0){
-
-                        backgroundImg.setImageResource(R.drawable.winter_morning_light_littlesnowy)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_morning_dark_littlesnowy)
-                    }
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy showers of ice pellets" ||
-                    condition == "Moderate or heavy snow showers" ||
-                    condition == "Moderate or heavy sleet showers" ||
-                    condition == "Patchy moderate snow"||
-                    condition == "Moderate snow" ||
-                    condition == "Patchy heavy snow"||
-                    condition == "Heavy snow"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_morning_light_snowy)
+                    backgroundImg.setImageResource(R.drawable.winter_morning_dark_sunny)
                 }
             }
 
             if (currentTime in 1200 until sunset - 100){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                if (minTemperature < -5){
 
-                    if (snowPrecipitation > 30.0){
+                    backgroundImg.setImageResource(R.drawable.winter_day_light_sunny)
+                } else {
 
-                        backgroundImg.setImageResource(R.drawable.winter_day_light_sunny)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_day_dark_sunny)
-                    }
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog" ||
-                    condition == "Freezing fog"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_day_dark_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Light showers of ice pellets" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light snow showers" ||
-                    condition == "Light sleet showers"||
-                    condition == "Blowing snow"||
-                    condition == "Blizzard" ||
-                    condition == "Light snow" ||
-                    condition == "Ice pellets"){
-
-                    if (snowPrecipitation > 30.0){
-
-                        backgroundImg.setImageResource(R.drawable.winter_day_light_littlesnowy)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_day_dark_littlesnowy)
-                    }
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy showers of ice pellets" ||
-                    condition == "Moderate or heavy snow showers" ||
-                    condition == "Moderate or heavy sleet showers"||
-                    condition == "Patchy moderate snow"||
-                    condition == "Moderate snow"||
-                    condition == "Patchy heavy snow"||
-                    condition == "Heavy snow"){
-
-                     backgroundImg.setImageResource(R.drawable.winter_day_light_snowy)
+                    backgroundImg.setImageResource(R.drawable.winter_day_dark_sunny)
                 }
             }
 
             if (currentTime in (sunset - 100) .. (sunset + 100)){
 
+                if (minTemperature < -5){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                    backgroundImg.setImageResource(R.drawable.winter_evening_light_sunny)
+                } else {
 
-                    if (snowPrecipitation > 30.0){
-
-                        backgroundImg.setImageResource(R.drawable.winter_evening_light_sunny)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_evening_dark_sunny)
-                    }
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog" ||
-                    condition == "Freezing fog"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_evening_dark_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Light showers of ice pellets" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light snow showers" ||
-                    condition == "Light sleet showers"||
-                    condition == "Blowing snow"||
-                    condition == "Blizzard" ||
-                    condition == "Light snow" ||
-                    condition == "Ice pellets"){
-
-                    if (snowPrecipitation > 30.0){
-
-                        backgroundImg.setImageResource(R.drawable.winter_evening_light_littlesnowy)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_evening_dark_littlesnowy)
-                    }
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy showers of ice pellets" ||
-                    condition == "Moderate or heavy snow showers" ||
-                    condition == "Moderate or heavy sleet showers"||
-                    condition == "Patchy moderate snow"||
-                    condition == "Moderate snow"||
-                    condition == "Patchy heavy snow"||
-                    condition == "Heavy snow"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_evening_light_snowy)
+                    backgroundImg.setImageResource(R.drawable.winter_evening_dark_sunny)
                 }
             }
 
             if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                if (minTemperature < -5){
 
-                    if (snowPrecipitation > 30.0){
+                    backgroundImg.setImageResource(R.drawable.winter_night_light_sunny)
+                } else {
 
-                        backgroundImg.setImageResource(R.drawable.winter_night_light_sunny)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_night_dark_sunny)
-                    }
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog" ||
-                    condition == "Freezing fog"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_night_dark_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Light showers of ice pellets" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light snow showers" ||
-                    condition == "Light sleet showers"||
-                    condition == "Blowing snow" ||
-                    condition == "Blizzard" ||
-                    condition == "Light snow" ||
-                    condition == "Ice pellets"){
-
-                    if (snowPrecipitation > 30.0){
-
-                        backgroundImg.setImageResource(R.drawable.winter_night_light_littlesnowy)
-                    } else {
-
-                        backgroundImg.setImageResource(R.drawable.winter_night_dark_littlesnowy)
-                    }
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy showers of ice pelletsr" ||
-                    condition == "Moderate or heavy snow showers" ||
-                    condition == "Moderate or heavy sleet showers"||
-                    condition == "Patchy moderate snow" ||
-                    condition == "Moderate snow"||
-                    condition == "Patchy heavy snow" ||
-                    condition == "Heavy snow"){
-
-                    backgroundImg.setImageResource(R.drawable.winter_night_light_snowy)
+                    backgroundImg.setImageResource(R.drawable.winter_night_dark_sunny)
                 }
             }
         }
 
         if (season in 3..5){
 
-            if (currentTime in sunrise .. 1200){
+            if (currentTime in sunrise until 1200){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_morning_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_morning_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_morning_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_morning_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_morning_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.spring_morning_sunny)
             }
 
             if (currentTime in 1200 until sunset - 100){
 
-
-                if (condition == "Sunny" || condition == "Clear"|| condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_day_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_day_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_day_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_day_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_day_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.spring_day_sunny)
             }
 
             if (currentTime in (sunset - 100) .. (sunset + 100)){
 
-
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_evening_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_evening_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_evening_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_evening_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_evening_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.spring_evening_sunny)
             }
 
             if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
 
-                if (condition == "Sunny" || condition == "Clear"|| condition == "Partly cloudy"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_night_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_night_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_night_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_night_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.spring_night_thunder)
-                }
+                backgroundImg.setImageResource(R.drawable.spring_night_sunny)
             }
         }
 
@@ -968,230 +334,49 @@ class MainFragment : Fragment() {
 
             if (currentTime in sunrise .. 1200){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                if (maxTemperature > 27){
+
+                    backgroundImg.setImageResource(R.drawable.summer_desert_morning_sunny)
+                } else {
 
                     backgroundImg.setImageResource(R.drawable.summer_morning_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_morning_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_morning_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_morning_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_morning_thunder)
                 }
             }
 
             if (currentTime in 1200 until sunset - 100){
 
+                if (maxTemperature > 27){
 
-                if (condition == "Sunny" || condition == "Clear"|| condition == "Partly cloudy"){
+                    backgroundImg.setImageResource(R.drawable.summer_desert_day_sunny)
+                } else {
 
                     backgroundImg.setImageResource(R.drawable.summer_day_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_day_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_day_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_day_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_day_thunder)
                 }
             }
 
             if (currentTime in (sunset - 100) .. (sunset + 100)){
 
+                if (maxTemperature > 27){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                    backgroundImg.setImageResource(R.drawable.summer_desert_evening_sunny)
+                } else {
 
                     backgroundImg.setImageResource(R.drawable.summer_evening_sunny)
-                }
-
-                if (condition == "Cloudy" ||
-                    condition == "Overcast" ||
-                    condition == "Mist" ||
-                    condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_evening_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_evening_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_evening_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_evening_thunder)
                 }
             }
 
             if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
 
-                if (condition == "Sunny" ||
-                    condition == "Clear"||
-                    condition == "Partly cloudy"){
+                if (maxTemperature > 27){
+
+                    backgroundImg.setImageResource(R.drawable.summer_desert_night_sunny)
+                } else {
 
                     backgroundImg.setImageResource(R.drawable.summer_night_sunny)
-                }
-
-                if (condition == "Cloudy" || condition == "Overcast" ||
-                    condition == "Mist" || condition == "Fog"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_night_cloudy)
-                }
-
-                if (condition == "Patchy rain possible" ||
-                    condition == "Patchy sleet possible" ||
-                    condition == "Patchy freezing drizzle possible" ||
-                    condition == "Patchy light drizzle" ||
-                    condition == "Light drizzle" ||
-                    condition == "Freezing drizzle" ||
-                    condition == "Patchy light rain" ||
-                    condition == "Light rain" ||
-                    condition == "Moderate rain at times" ||
-                    condition == "Moderate rain" ||
-                    condition == "Light freezing rain" ||
-                    condition == "Light sleet" ||
-                    condition == "Moderate or heavy sleet"||
-                    condition == "Light rain shower" ||
-                    condition == "Light sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_night_rainy)
-                }
-
-                if (condition == "Heavy freezing drizzle" ||
-                    condition == "Heavy rain at times" ||
-                    condition == "Heavy rain" ||
-                    condition == "Moderate or heavy freezing rain" ||
-                    condition == "Moderate or heavy rain shower" ||
-                    condition == "Torrential rain shower" ||
-                    condition == "Moderate or heavy sleet showers"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_night_hardrain)
-                }
-
-                if (condition == "Patchy light rain with thunder" ||
-                    condition == "Moderate or heavy rain with thunder" ||
-                    condition == "Patchy light snow with thunder" ||
-                    condition == "Moderate or heavy snow with thunder" ||
-                    condition == "Thundery outbreaks possible"){
-
-                    backgroundImg.setImageResource(R.drawable.summer_night_thunder)
                 }
             }
         }
     }
-
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
