@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
-    android:background="@color/common_google_signin_btn_text_light_focused"
     tools:context=".fragments.MainFragment">
 
     <ImageView
@@ -88,6 +87,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewData"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <ImageButton
+                android:id="@+id/imageButton_search_city2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:visibility="invisible"
+                android:src="@drawable/search_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewData" />
+
 
             <ImageButton
                 android:id="@+id/imageButton_search_city"
@@ -100,6 +110,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewData" />
 
 
+            <EditText
+                android:id="@+id/editCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="52dp"
+                android:hint="Enter city:"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                tools:ignore="MissingConstraints"
+                android:textColorHint="@color/black"
+                android:textSize="20sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/timeUpdatePointer"
+                app:layout_constraintTop_toBottomOf="@+id/timeUpdatePointer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -173,21 +199,10 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_launcher_foreground"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton_update_info"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/imageButton_update_info"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="8dp"
-                android:background="@null"
-                android:src="@drawable/update_info_button"
-                app:layout_constraintBottom_toBottomOf="@+id/imageWeather"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageWeather"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewMaxMinTemperature"

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +19,20 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
-import com.tim.weatherapp.MainViewModel
-import com.tim.weatherapp.R
+import com.tim.weatherapp.*
 import com.tim.weatherapp.adapters.ViewPagerAdapter
 import com.tim.weatherapp.adapters.WeatherModel
 import com.tim.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
 import kotlin.math.roundToInt
 
-const val API_Key = "05be604b8a704207b3a135103220709"
 
-class MainFragment : Fragment() {
+const val API_Key = "ba691d6c725e4032ad893150221609"
+
+class MainFragment : Fragment(){
+
+    private var city = "Minsk"
+
     private val tabsList = listOf(
         "Today",
         "Tomorrow",
@@ -48,16 +52,17 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
         backgroundImg.setImageResource(R.drawable.summer_day_sunny)
         checkPermission()
         init()
-        requestWeatherData("Minsk")
+        requestWeatherData(city)
         cardView.setBackgroundResource(R.drawable.borders_for_view)
         cardView2.setBackgroundResource(R.drawable.borders_for_view)
         updateCurrentCard()
@@ -70,10 +75,68 @@ class MainFragment : Fragment() {
         ViewPager.adapter = adapter
 
         TabLayoutMediator(tabLayoutDaysSwitcher, ViewPager) {
-
-                tab, position ->
-            tab.text = tabsList[position]
+                tab, position -> tab.text = tabsList[position]
         }.attach()
+
+        updateCity()
+    }
+
+    private fun updateCity() = with(binding) {
+
+        imageButtonSearchCity.setOnClickListener {
+
+            imageButtonSearchCity.visibility = View.INVISIBLE
+            imageButtonSearchCity2.visibility = View.VISIBLE
+            editCity.visibility = View.VISIBLE
+            textViewCityName.visibility = View.INVISIBLE
+
+            textViewCityName.text = editCity.text.ifEmpty { city }
+            city = editCity.text.toString().ifEmpty { city }
+            requestWeatherData("${textViewCityName.text}")
+
+            editCity.setOnKeyListener(object : View.OnKeyListener {
+                override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                    // if the event is a key down event on the enter button
+                    if (event.action == KeyEvent.ACTION_DOWN &&
+                        keyCode == KeyEvent.KEYCODE_ENTER
+                    ) {
+
+                        imageButtonSearchCity2.visibility = View.INVISIBLE
+                        imageButtonSearchCity.visibility = View.VISIBLE
+                        editCity.visibility = View.INVISIBLE
+                        textViewCityName.visibility = View.VISIBLE
+
+                        textViewCityName.text = editCity.text.ifEmpty { city }
+                        city = editCity.text.toString().ifEmpty { city }
+                        editCity.text = null
+                        editCity.hint = "Enter city"
+
+                        requestWeatherData("${textViewCityName.text}")
+
+                        return true
+                    } else {
+
+                        return false
+                    }
+
+                }
+            })
+
+            imageButtonSearchCity2.setOnClickListener {
+
+                imageButtonSearchCity2.visibility = View.INVISIBLE
+                imageButtonSearchCity.visibility = View.VISIBLE
+                editCity.visibility = View.INVISIBLE
+                textViewCityName.visibility = View.VISIBLE
+
+                textViewCityName.text = editCity.text.ifEmpty { city }
+                city = editCity.text.toString().ifEmpty { city }
+                editCity.text = null
+                editCity.hint = "Enter city"
+
+                requestWeatherData("${textViewCityName.text}")
+            }
+        }
     }
 
     private fun updateCurrentCard() = with(binding) {
@@ -87,12 +150,13 @@ class MainFragment : Fragment() {
             textViewMaxMinTemperature.text = maxMinTemperature
             Picasso.get().load("https:" + it.imageUrl).into(imageWeather)
 
-            changeBackgroundImage(it.time,
+            changeBackgroundImage(
+                it.time,
                 it.sunrise,
                 it.sunset,
-                 it.condition,
                 it.maxTemperature.toFloat(),
-                it.minTemperature.toFloat())
+                it.minTemperature.toFloat()
+            )
         }
     }
 
@@ -220,13 +284,15 @@ class MainFragment : Fragment() {
         month: String,
         sunriseX: String,
         sunsetX: String,
-        condition: String,
         maxTemperature: Float,
         minTemperature: Float
-    ) = with(binding){
+    ) = with(binding) {
 
         val season = month[5].digitToInt() * 10 + month[6].digitToInt()
-        val currentTime = month[11].digitToInt() * 1000 + month[12].digitToInt() * 100
+        val currentTime = month[11].digitToInt() * 1000 +
+                month[12].digitToInt() * 100 +
+                month[14].digitToInt() * 10 +
+                month[15].digitToInt()
         val sunrise = sunriseX[0].digitToInt() * 1000 +
                 sunriseX[1].digitToInt() * 100 +
                 sunriseX[3].digitToInt() * 10 +
@@ -236,46 +302,43 @@ class MainFragment : Fragment() {
                 sunsetX[3].digitToInt() * 10 +
                 sunsetX[4].digitToInt() + 12 * 100
 
-        Toast.makeText(activity, "$currentTime $sunrise $sunset $condition", Toast.LENGTH_LONG).show()
+        if (season in 9..11) {
 
-        if (season in 9..11){
-
-            if (currentTime in sunrise .. 1200){
+            if (currentTime in sunrise..1200) {
                 backgroundImg.setImageResource(R.drawable.autumn_morning_sunny)
             }
 
-            if (currentTime in 1200 until sunset - 100){
+            if (currentTime in 1200 until sunset - 100) {
 
                 backgroundImg.setImageResource(R.drawable.autumn_day_sunny)
             }
 
-            if (currentTime in (sunset - 100) .. (sunset + 100)){
+            if (currentTime in (sunset - 100)..(sunset + 100)) {
 
-                //textViewData.setHintTextColor(R.color.white)
                 backgroundImg.setImageResource(R.drawable.autumn_evening_sunny)
             }
 
-            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
+            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise) {
                 backgroundImg.setImageResource(R.drawable.autumn_night_sunny)
             }
         }
 
-        if (season == 12 || season in 1..2){
+        if (season == 12 || season in 1..2) {
 
-            if (currentTime in sunrise .. 1200){
+            if (currentTime in sunrise..1200) {
 
-                if(minTemperature < -5){
+                if (minTemperature < -5) {
 
                     backgroundImg.setImageResource(R.drawable.winter_morning_light_sunny)
-                } else{
+                } else {
 
                     backgroundImg.setImageResource(R.drawable.winter_morning_dark_sunny)
                 }
             }
 
-            if (currentTime in 1200 until sunset - 100){
+            if (currentTime in 1200 until sunset - 100) {
 
-                if (minTemperature < -5){
+                if (minTemperature < -5) {
 
                     backgroundImg.setImageResource(R.drawable.winter_day_light_sunny)
                 } else {
@@ -284,9 +347,9 @@ class MainFragment : Fragment() {
                 }
             }
 
-            if (currentTime in (sunset - 100) .. (sunset + 100)){
+            if (currentTime in (sunset - 100)..(sunset + 100)) {
 
-                if (minTemperature < -5){
+                if (minTemperature < -5) {
 
                     backgroundImg.setImageResource(R.drawable.winter_evening_light_sunny)
                 } else {
@@ -295,9 +358,9 @@ class MainFragment : Fragment() {
                 }
             }
 
-            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
+            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise) {
 
-                if (minTemperature < -5){
+                if (minTemperature < -5) {
 
                     backgroundImg.setImageResource(R.drawable.winter_night_light_sunny)
                 } else {
@@ -307,34 +370,34 @@ class MainFragment : Fragment() {
             }
         }
 
-        if (season in 3..5){
+        if (season in 3..5) {
 
-            if (currentTime in sunrise until 1200){
+            if (currentTime in sunrise until 1200) {
 
                 backgroundImg.setImageResource(R.drawable.spring_morning_sunny)
             }
 
-            if (currentTime in 1200 until sunset - 100){
+            if (currentTime in 1200 until sunset - 100) {
 
                 backgroundImg.setImageResource(R.drawable.spring_day_sunny)
             }
 
-            if (currentTime in (sunset - 100) .. (sunset + 100)){
+            if (currentTime in (sunset - 100)..(sunset + 100)) {
 
                 backgroundImg.setImageResource(R.drawable.spring_evening_sunny)
             }
 
-            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
+            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise) {
 
                 backgroundImg.setImageResource(R.drawable.spring_night_sunny)
             }
         }
 
-        if (season in 6..8){
+        if (season in 6..8) {
 
-            if (currentTime in sunrise .. 1200){
+            if (currentTime in sunrise..1200) {
 
-                if (maxTemperature > 27){
+                if (maxTemperature > 27) {
 
                     backgroundImg.setImageResource(R.drawable.summer_desert_morning_sunny)
                 } else {
@@ -343,9 +406,9 @@ class MainFragment : Fragment() {
                 }
             }
 
-            if (currentTime in 1200 until sunset - 100){
+            if (currentTime in 1200 until sunset - 100) {
 
-                if (maxTemperature > 27){
+                if (maxTemperature > 27) {
 
                     backgroundImg.setImageResource(R.drawable.summer_desert_day_sunny)
                 } else {
@@ -354,9 +417,9 @@ class MainFragment : Fragment() {
                 }
             }
 
-            if (currentTime in (sunset - 100) .. (sunset + 100)){
+            if (currentTime in (sunset - 100)..(sunset + 100)) {
 
-                if (maxTemperature > 27){
+                if (maxTemperature > 27) {
 
                     backgroundImg.setImageResource(R.drawable.summer_desert_evening_sunny)
                 } else {
@@ -365,9 +428,9 @@ class MainFragment : Fragment() {
                 }
             }
 
-            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise){
+            if (currentTime in (sunset + 100) until 2400 || currentTime in 0 until sunrise) {
 
-                if (maxTemperature > 27){
+                if (maxTemperature > 27) {
 
                     backgroundImg.setImageResource(R.drawable.summer_desert_night_sunny)
                 } else {
@@ -377,6 +440,7 @@ class MainFragment : Fragment() {
             }
         }
     }
+
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
