@@ -2,7 +2,6 @@ package com.tim.weatherapp.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,9 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import com.android.volley.Request
@@ -27,8 +24,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
+import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 import com.tim.weatherapp.DialogManager
@@ -39,12 +38,10 @@ import com.tim.weatherapp.adapters.WeatherModel
 import com.tim.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
 import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 
+const val API_Key = "f7a7d946943946d084a203529221512"
 
-const val API_Key = "a4a2d1e991a441618e375056220310"
-
-class MainFragment : Fragment() {
+class MainFragment : androidx.fragment.app.Fragment() {
 
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -83,12 +80,6 @@ class MainFragment : Fragment() {
         cardView.setBackgroundResource(R.drawable.borders_for_view)
         cardView2.setBackgroundResource(R.drawable.borders_for_view)
         updateCurrentCard()
-        checkLocation()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkLocation()
     }
 
     private fun init() = with(binding) {
@@ -116,7 +107,6 @@ class MainFragment : Fragment() {
             DialogManager.locationSettingDialog(requireContext(), object : DialogManager.Listener {
                 override fun onClick() {
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-
                 }
             })
 
@@ -145,11 +135,31 @@ class MainFragment : Fragment() {
         }
 
         fusedLocationProviderClient
-            .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, ct.token)
+            .getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken(){
+
+                override fun onCanceledRequested(listener: OnTokenCanceledListener) = CancellationTokenSource().token
+
+                override fun isCancellationRequested() = false
+            })
+            .addOnSuccessListener {
+                if (it == null)
+                    Toast.makeText(this.context, "Cannot get location.", Toast.LENGTH_SHORT).show()
+                else {
+                    val lat = it.latitude
+                    val lon = it.longitude
+
+                }
+            }
+            .addOnCompleteListener {
+                requestWeatherData("${it.result.latitude},${it.result.longitude}")
+            }
+
+        /*fusedLocationProviderClient
+            .getCurrentLocation(RenderScript.Priority.PRIORITY_HIGH_ACCURACY, ct.token)
             .addOnCompleteListener {
 
                 requestWeatherData("${it.result.latitude},${it.result.longitude}")
-            }
+            }*/
     }
 
     private fun updateCity() = with(binding) {
