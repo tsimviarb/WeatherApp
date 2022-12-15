@@ -8,7 +8,6 @@ object DialogManager {
     fun locationSettingDialog(context: Context, listener: Listener){
 
         val dialog = AlertDialog.Builder(context).create()
-
         dialog.setMessage("You should activate location or type position\nDo you want to set location in settings?")
 
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES"){ _,_ ->

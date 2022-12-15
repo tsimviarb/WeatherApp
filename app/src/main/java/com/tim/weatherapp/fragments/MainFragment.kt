@@ -153,13 +153,6 @@ class MainFragment : androidx.fragment.app.Fragment() {
             .addOnCompleteListener {
                 requestWeatherData("${it.result.latitude},${it.result.longitude}")
             }
-
-        /*fusedLocationProviderClient
-            .getCurrentLocation(RenderScript.Priority.PRIORITY_HIGH_ACCURACY, ct.token)
-            .addOnCompleteListener {
-
-                requestWeatherData("${it.result.latitude},${it.result.longitude}")
-            }*/
     }
 
     private fun updateCity() = with(binding) {
