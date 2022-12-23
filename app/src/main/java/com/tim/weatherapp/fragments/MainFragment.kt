@@ -39,7 +39,7 @@ import com.tim.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
 import kotlin.math.roundToInt
 
-const val API_Key = "f7a7d946943946d084a203529221512"
+const val API_Key = "c3ab459ffcf2429caa8163112221712"
 
 class MainFragment : androidx.fragment.app.Fragment() {
 
@@ -246,6 +246,7 @@ class MainFragment : androidx.fragment.app.Fragment() {
         if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             permissionListener()
             pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            Toast.makeText(this.context, "Permission is enabled in manifest", Toast.LENGTH_SHORT).show()
         }
     }
 
