@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -53,7 +52,7 @@ class MainFragment : androidx.fragment.app.Fragment() {
     private val tabsList = listOf(
         "Today",
         "Tomorrow",
-        "10 days"
+        "Forecast"
     )
     private val fragmentsList = listOf(
         TodayInfoFragment.newInstance(),
