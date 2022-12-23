@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -37,7 +38,9 @@ import com.tim.weatherapp.adapters.ViewPagerAdapter
 import com.tim.weatherapp.adapters.WeatherModel
 import com.tim.weatherapp.databinding.FragmentMainBinding
 import org.json.JSONObject
+import java.util.*
 import kotlin.math.roundToInt
+
 
 const val API_Key = "c3ab459ffcf2429caa8163112221712"
 
@@ -135,9 +138,10 @@ class MainFragment : androidx.fragment.app.Fragment() {
         }
 
         fusedLocationProviderClient
-            .getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken(){
+            .getCurrentLocation(PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
 
-                override fun onCanceledRequested(listener: OnTokenCanceledListener) = CancellationTokenSource().token
+                override fun onCanceledRequested(listener: OnTokenCanceledListener) =
+                    CancellationTokenSource().token
 
                 override fun isCancellationRequested() = false
             })
@@ -148,10 +152,8 @@ class MainFragment : androidx.fragment.app.Fragment() {
                     val lat = it.latitude
                     val lon = it.longitude
 
+                    requestWeatherData("${lat},${lon}")
                 }
-            }
-            .addOnCompleteListener {
-                requestWeatherData("${it.result.latitude},${it.result.longitude}")
             }
     }
 
@@ -246,7 +248,8 @@ class MainFragment : androidx.fragment.app.Fragment() {
         if (!isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             permissionListener()
             pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            Toast.makeText(this.context, "Permission is enabled in manifest", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.context, "Permission is enabled in manifest", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
